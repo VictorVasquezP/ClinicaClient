@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Clinica.Objects.Medicamento>
+@{
+    ViewBag.Title = "Medicamentos";
+    ViewBag.descripcion = "En este módulo se pueden ver los medicamentos y sus detalles en la siguiente tabla";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="text-center">Medicamentos</h3>
+            <table class="table table-hover table-style text-white text-center" id="dataTable">
+                <thead class="">
+                    <tr>
+                        <th class="text-center">
+                            Nombre del medicamento
+                        </th>
+                        <th class="text-center">
+                            Dosis
+                        </th>
+                        <th class="text-center">
+                            Precio
+                        </th>
+                        <th>
+                            Indicaciones
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            @item.nombre
+                        </td>
+                        <td>
+                            @item.dosis
+                        </td>
+                        <td>
+                            @item.precio
+                        </td>
+                        <td>
+                            @item.indicaciones
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+@Scripts.Render("~/bundles/jquery")
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+<script>
+    $('#dataTable').DataTable({
+        "destroy": false,
+        pageLength: 7,
+        "language": {
+            "url": "https://cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+        },
+        lengthMenu: [[5, 10, 15], [5, 10, 15]]
+    });
+
+</script>

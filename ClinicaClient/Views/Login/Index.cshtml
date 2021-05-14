@@ -1,0 +1,39 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>JSP Page</title>
+</head>
+<link href="~/Content/css/Style_login.css" rel="stylesheet">
+<body>
+
+    <div class="container">
+        <div class="info">
+            <h1>Clinica Medica</h1><span><h1>Login</h1></span>
+        </div>
+    </div>
+    <div class="form">
+        <div class="thumbnail"><img src="https://images.vexels.com/media/users/3/208291/isolated/preview/02b2830761405fae3d0422091abc8b8d-icono-de-trazo-de-ubicaci-oacute-n-del-hospital-by-vexels.png" /></div>
+        @using (Html.BeginForm("Index", "Login", FormMethod.Post, new { @class = "login-form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <input name="usu" type="text" value="@ViewBag.usua" placeholder="Usuario" />
+            <input name="pas" type="password" placeholder="Contraseña" />
+            <button type="submit">Iniciar sesión</button>
+            if (ViewBag.Mensaje != null)
+            {
+                <br /><br />
+                <div class="text-center text-danger msg-error" style="color:red;">@ViewBag.Mensaje </div>
+            }
+        }
+    </div>
+
+</body>
+</html>
+
+

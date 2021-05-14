@@ -1,0 +1,169 @@
+﻿@model IEnumerable<ClinicaClient.Models.Pacientes>
+@{
+    ViewBag.Title = "Pacientes";
+    ViewBag.descripcion = "En este módulo se pueden ver los pacientes registrados, con opciones de registrar uno nuevo, ver sus recetas y eliminarlo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
+
+<div>
+    <button type="button" class="mb-3 mr-3 btn-transition btn btn-outline-primary" data-toggle="modal" data-target="#registro">REGISTRAR</button>
+</div>
+
+<h3 class="text-center text-uppercase">Pacientes</h3>
+<table class="table table-hover table-style text-white text-center" id="dataTable">
+    <thead class=" text-uppercase">
+        <tr>
+            <th class="text-center">
+                Nombre
+            </th>
+            <th class="text-center">
+                Apellido paterno
+            </th>
+            <th class="text-center">
+                Apellido materno
+            </th>
+            <th class="text-center">
+                Email
+            </th>
+            <th class="text-center">
+                Recetas
+            </th>
+            <th class="text-center">
+                Eliminar
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.nombre
+                </td>
+                <td>
+                    @item.ape_pat
+                </td>
+                <td>
+                    @item.ape_mat
+                </td>
+                <td>
+                    @item.usuario
+                </td>
+                <td>
+                    <a href="~/Recetas?id=@item.id_paciente" class="text-white">
+                        <i class="pe-7s-note2"></i>
+                    </a>
+                </td>
+                <td>
+                    <a href="#eliminar" onclick="eliminar(@item.id_paciente,'@item.nombre')" class="text-white" data-toggle="modal" data-target="#eliminar">
+                        <i class="pe-7s-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<!-- Modal -->
+<div class="modal fade" id="registro" tabindex="1000" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">REGISTRO DE PACIENTE</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("Registrar", "Pacientes", FormMethod.Post, new { htmlAttributes = new { @class = "form-control" } }))
+                {
+                    <div class="form-row">
+                        <div class="col-md-12 mb-12">
+                            <label for="validationCustom01">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="nombre" required>
+                        </div>
+                        <div class="col-md-12 mb-12">
+                            <br />
+                            <label for="validationCustom01">Apellido paterno</label>
+                            <input type="text" class="form-control" id="ape_pat" name="ape_pat" placeholder="apellido parteno" required>
+                        </div>
+                        <div class="col-md-12 mb-12">
+                            <br />
+                            <label for="validationCustom01">Apellido materno</label>
+                            <input type="text" class="form-control" id="ape_mat" name="ape_mat" placeholder="apellido materno" required>
+                        </div>
+                        <div class="col-md-12 mb-12">
+                            <br />
+                            <label for="validationCustom01">Email</label>
+                            <input type="text" class="form-control" id="usuario" name="usuario" placeholder="ejemplo@ejemplo.com">
+                        </div>
+                        <div class="col-md-12 mb-12">
+                            <br />
+                            <label for="validationCustom01">Contraseña</label>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="contraseña">
+                        </div>
+                    </div>
+                    <br />
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Enviar</button>
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="eliminar" tabindex="1000" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">ELIMINAR PACIENTE</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("Eliminar", "Pacientes", FormMethod.Post, new { htmlAttributes = new { @class = "form-control" } }))
+                {
+                    <input type="hidden" value="" id="id_eliminar" name="id" />
+                    <p>¿Esta seguro de eliminar al paciente <strong id="nombre_eliminar"></strong> ?</p>
+                    <br />
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Eliminar</button>
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+<script>
+    $('#dataTable').DataTable({
+        "destroy": false,
+        pageLength: 7,
+        "language": {
+            "url": "https://cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+        },
+        lengthMenu: [[5, 10, 15], [5, 10, 15]]
+    });
+</script>
+<script type="text/javascript">
+        function eliminar(id, nombre) {
+            document.getElementById("id_eliminar").value = id;
+        document.getElementById("nombre_eliminar").innerHTML = nombre;
+
+    }
+</script>
+
+

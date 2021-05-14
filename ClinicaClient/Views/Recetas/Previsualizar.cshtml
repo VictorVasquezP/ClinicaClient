@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewBag.Title = "Previsualizar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Previsualizar @Model</h2>
+<style>
+    #frame{
+        width: 100%;
+        height:85vh;
+    }
+</style>
+<iframe id="frame" src="data:application/pdf;base64,@ViewData["doc"]"></iframe>

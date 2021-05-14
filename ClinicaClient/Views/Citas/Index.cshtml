@@ -1,0 +1,473 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    ViewBag.descripcion = "En este módulo se pueden ver las citas pendientes, las aceptadas y las rechazadas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<ClinicaClient.Objects.CitasDoctorObject> listaCitasPendientes = (List<ClinicaClient.Objects.CitasDoctorObject>)TempData["CitasPendiantes"];
+    List<ClinicaClient.Objects.CitasDoctorObject> listaCitasAceptadas = (List<ClinicaClient.Objects.CitasDoctorObject>)TempData["CitasAceptadas"];
+    List<ClinicaClient.Objects.CitasDoctorObject> listaCitasRechazadas = (List<ClinicaClient.Objects.CitasDoctorObject>)TempData["CitasRechazadas"];
+    List<ClinicaClient.Objects.CitasDoctorObject> listaCitasRealizadas = (List<ClinicaClient.Objects.CitasDoctorObject>)TempData["CitasRealizadas"];
+    List<ClinicaClient.Models.Pacientes> listaPacientes = (List<ClinicaClient.Models.Pacientes>)TempData["listaPacientes"];
+}
+<link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
+<div class="">
+    <ul class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav">
+        <li class="nav-item">
+            <a role="tab" class="nav-link active" id="tab-0" data-toggle="tab" href="#tab-content-0">
+                <span>Citas Pendientes</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a role="tab" class="nav-link" id="tab-1" data-toggle="tab" href="#tab-content-1">
+                <span>Citas Aceptadas</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a role="tab" class="nav-link" id="tab-2" data-toggle="tab" href="#tab-content-2">
+                <span>Citas Rechazadas</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a role="tab" class="nav-link" id="tab-3" data-toggle="tab" href="#tab-content-3">
+                <span>Citas Realizadas</span>
+            </a>
+        </li>
+    </ul><br /><br />
+    <div class="tab-content">
+        <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
+            <div class="row">
+                <button class="mb-3 mr-3 btn-transition btn btn-outline-warning" data-toggle="modal" data-target="#registroCita" onclick="cambiarDatosPaciente()">
+                    Registrar Cita
+                </button>
+
+                <div class="col-md-12">
+                    <h3 class="text-center">Citas Pendientes</h3>
+                    <table class="table table-hover table-style text-white text-center" id="dataTable_CitasPendientes">
+                        <thead class="">
+                            <tr>
+                                <th class="text-center">
+                                    Nombre del Paciente
+                                </th>
+                                <th class="text-center">
+                                    Fecha
+                                </th>
+                                <th class="text-center">
+                                    Hora
+                                </th>
+                                <th>
+                                    Observación
+                                </th>
+                                <th class="text-center">Aceptar</th>
+                                <th class="text-center">Rechazar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in listaCitasPendientes)
+                            {
+                                <tr>
+                                    <td>
+                                        @item.nombrePaciente
+                                    </td>
+                                    <td>
+                                        @item.fecha
+                                    </td>
+                                    <td>
+                                        @item.hora
+                                    </td>
+                                    <td>
+                                        @item.observacion
+                                    </td>
+                                    <td>
+                                        <button class="mb-2 mr-2 btn btn-success" type="button" data-toggle="modal" data-target="#modalPush" onclick="OpenModal(@item.id_cita,1)">
+                                            Aceptar
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button class="mb-2 mr-2 btn btn-danger" type="button" data-toggle="modal" data-target="#modalPush" onclick="OpenModal(@item.id_cita,2)">
+                                            Rechazar
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane tabs-animation fade" id="tab-content-1" role="tabpanel">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="text-center">Citas Aceptada</h3>
+                    <table class="table table-hover table-style text-white text-center" id="dataTable_CitasAceptadas">
+                        <thead class="">
+                            <tr>
+                                <th class="text-center">
+                                    Nombre del Paciente
+                                </th>
+                                <th class="text-center">
+                                    Fecha
+                                </th>
+                                <th class="text-center">
+                                    Hora
+                                </th>
+                                <th>
+                                    Observación
+                                </th>
+                                <th class="text-center">Ver Detalles</th>
+                                <th class="text-center">Eliminar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in listaCitasAceptadas)
+                            {
+                                <tr>
+                                    <td>
+                                        @item.nombrePaciente
+                                    </td>
+                                    <td>
+                                        @item.fecha
+                                    </td>
+                                    <td>
+                                        @item.hora
+                                    </td>
+                                    <td>
+                                        @item.observacion
+                                    </td>
+                                    <td>
+                                        <a class="mb-2 mr-2 btn btn-info" href="~/Citas/DetallesCita?id_cita=@item.id_cita">
+                                            Ver
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <button class="mb-2 mr-2 btn btn-danger" type="button" data-toggle="modal" data-target="#modalConfirmDelete" onclick="OpenModalDelete(@item.id_cita)">
+                                            Eliminar
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="tab-pane tabs-animation fade" id="tab-content-2" role="tabpanel">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="text-center">Citas Rechazadas</h3>
+                    <table class="table table-hover table-style text-white text-center" id="dataTable_CitasRechazadas">
+                        <thead class="">
+                            <tr>
+                                <th class="text-center">
+                                    Nombre del Paciente
+                                </th>
+                                <th class="text-center">
+                                    Fecha
+                                </th>
+                                <th class="text-center">
+                                    Hora
+                                </th>
+                                <th>
+                                    Observación
+                                </th>
+                                <th class="text-center">Eliminar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in listaCitasRechazadas)
+                            {
+                                <tr>
+                                    <td>
+                                        @item.nombrePaciente
+                                    </td>
+                                    <td>
+                                        @item.fecha
+                                    </td>
+                                    <td>
+                                        @item.hora
+                                    </td>
+                                    <td>
+                                        @item.observacion
+                                    </td>
+                                    <td>
+                                        <button class="mb-2 mr-2 btn btn-danger" type="button" data-toggle="modal" data-target="#modalConfirmDelete" onclick="OpenModalDelete(@item.id_cita)">
+                                            Eliminar
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane tabs-animation fade" id="tab-content-3" role="tabpanel">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="text-center">Citas Realizadas</h3>
+                    <table class="table table-hover table-style text-white text-center" id="dataTable_CitasRealizadas">
+                        <thead class="">
+                            <tr>
+                                <th class="text-center">
+                                    Nombre del Paciente
+                                </th>
+                                <th class="text-center">
+                                    Fecha
+                                </th>
+                                <th class="text-center">
+                                    Hora
+                                </th>
+                                <th>
+                                    Observación
+                                </th>
+                                <th class="text-center">Eliminar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in listaCitasRealizadas)
+                            {
+                                <tr>
+                                    <td>
+                                        @item.nombrePaciente
+                                    </td>
+                                    <td>
+                                        @item.fecha
+                                    </td>
+                                    <td>
+                                        @item.hora
+                                    </td>
+                                    <td>
+                                        @item.observacion
+                                    </td>
+                                    <td>
+                                        <button class="mb-2 mr-2 btn btn-danger" type="button" data-toggle="modal" data-target="#modalConfirmDelete" onclick="OpenModalDelete(@item.id_cita)">
+                                            Eliminar
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="registroCita" tabindex="1000" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">REGISTRO DE CITA</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("registrarCita", "Citas", FormMethod.Post, new { htmlAttributes = new { @class = "form-control" } }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-row">
+                        <div class="col-md-12 mb-12">
+                            <label for="validationCustom01">Usuario</label><br />
+                            <select id="paciente" class="form-control" onchange="cambiarDatosPaciente()">
+                                @foreach (var item in listaPacientes)
+                                {
+                                    if (!item.usuario.IsEmpty())
+                                    {
+                                        <option value="@Json.Encode(item)">@item.usuario</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@Json.Encode(item)">@item.nombre @item.ape_pat @item.ape_pat</option>
+                                    }
+
+                                }
+                            </select>
+                        </div>
+                        <input type="hidden" class="form-control" id="id_paciente" name="id_paciente">
+                        <div class="col-md-12 mb-12">
+                            <label for="validationCustom01">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" placeholder="nombre" disabled>
+                        </div>
+                        <div class="col-md-12 mb-12">
+                            <br />
+                            <label for="validationCustom01">Apellido paterno</label>
+                            <input type="text" class="form-control" id="ape_pat" placeholder="apellido parteno" disabled>
+                        </div>
+                        <div class="col-md-12 mb-12">
+                            <br />
+                            <label for="validationCustom01">Apellido materno</label>
+                            <input type="text" class="form-control" id="ape_mat" placeholder="apellido materno" disabled>
+                        </div>
+                        <div class="col-md-12 mb-12">
+                            <br />
+                            <label for="validationCustom01">Fecha</label>
+                            <input type="date" class="form-control" id="fecha" name="fecha" required>
+                        </div>
+                        <div class="col-md-12 mb-12">
+                            <br />
+                            <label for="validationCustom01">Hora</label><br />
+                            <select class="form-control" id="hora" name="hora">
+                                <option value="9">9:00 A.M.</option>
+                                <option value="10">10:00 A.M.</option>
+                                <option value="11">11:00 A.M.</option>
+                                <option value="12">12:00 P.M.</option>
+                                <option value="13">1:00 P.M.</option>
+                                <option value="14">2:00 P.M.</option>
+                                <option value="15">3:00 A.M.</option>
+                                <option value="16">4:00 A.M.</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12 mb-12">
+                            <br />
+                            <label for="validationCustom01">Observación</label>
+                            <input type="text" class="form-control" id="observacion" name="observacion" placeholder="Observación" required>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Enviar</button>
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!--Modal: modalConfirmDelete-->
+<div class="modal fade" id="modalConfirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+        <!--Content-->
+        <div class="modal-content text-center">
+            <!--Header-->
+            <div class="modal-header d-flex justify-content-center">
+                <p class="heading">¿Estás seguro/a?</p>
+            </div>
+            <!--Body-->
+            @using (Html.BeginForm("eliminarCita", "Citas", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-body">
+                    <i class="fas fa-times fa-4x animated rotateIn"></i>
+                    <input type="hidden" name="id_cita" id="id_citaE" value="" />
+                </div>
+
+                <!--Footer-->
+                <div class="modal-footer flex-center">
+                    <button type="submit" class="btn  btn-outline-danger">SI</button>
+                    <a type="button" class="btn  btn-danger waves-effect" data-dismiss="modal">NO</a>
+                </div>
+            }
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+<!--Modal: modalConfirmDelete-->
+
+
+
+<!--Modal: modalPush-->
+<div class="modal fade" id="modalPush" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-notify modal-info" role="document">
+    <!--Content-->
+      <div class="modal-content text-center">
+          <!--Header-->
+          <div class="modal-header d-flex justify-content-center">
+              <p class="heading">Actualizar Cita</p>
+          </div>
+
+          <!--Body-->
+          @using (Html.BeginForm("actualizarStatusCita", "Citas", FormMethod.Post))
+          {
+              @Html.AntiForgeryToken()
+              <div class="modal-body">
+
+                  <i class="fas fa-bell fa-4x animated rotateIn mb-4"></i>
+
+                  <p>¿Está seguro/a de actualizar la cita?</p>
+                  <input type="hidden" name="id_cita" id="id_cita" value="" />
+                  <input type="hidden" name="status" id="status" value="" />
+              </div>
+
+              <!--Footer-->
+              <div class="modal-footer flex-center">
+                  <button type="submit" class="btn btn-info">SI</button>
+                  <a type="button" class="btn btn-outline-info waves-effect" data-dismiss="modal">NO</a>
+              </div>
+          }
+      </div>
+    <!--/.Content-->
+  </div>
+</div>
+<!--Modal: modalPush-->
+
+
+@Scripts.Render("~/bundles/jquery")
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+<script>
+    $('#dataTable_CitasPendientes').DataTable({
+        "destroy": false,
+        pageLength: 7,
+        "language": {
+            "url": "https://cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+        },
+        lengthMenu: [[5, 10, 15], [5, 10, 15]]
+    });
+
+    $('#dataTable_CitasAceptadas').DataTable({
+        "destroy": false,
+        pageLength: 7,
+        "language": {
+            "url": "https://cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+        },
+        lengthMenu: [[5, 10, 15], [5, 10, 15]]
+    });
+
+    $('#dataTable_CitasRechazadas').DataTable({
+        "destroy": false,
+        pageLength: 7,
+        "language": {
+            "url": "https://cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+        },
+        lengthMenu: [[5, 10, 15], [5, 10, 15]]
+    });
+
+    $('#dataTable_CitasRealizadas').DataTable({
+        "destroy": false,
+        pageLength: 7,
+        "language": {
+            "url": "https://cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+        },
+        lengthMenu: [[5, 10, 15], [5, 10, 15]]
+    });
+
+    function OpenModal(valor,valor2) {
+        document.getElementById("id_cita").value = valor;
+        document.getElementById("status").value = valor2;
+    }
+
+    function OpenModalDelete(valor) {
+        document.getElementById("id_citaE").value = valor;
+    }
+
+    function cambiarDatosPaciente() {
+        var datos = JSON.parse(document.getElementById("paciente").value);
+        document.getElementById("id_paciente").value = datos.id_paciente;
+        document.getElementById("nombre").value = datos.nombre;
+        document.getElementById("ape_pat").value = datos.ape_pat;
+        document.getElementById("ape_mat").value = datos.ape_mat;
+        console.log(datos);
+    }
+</script>
+

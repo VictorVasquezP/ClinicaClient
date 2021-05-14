@@ -1,0 +1,57 @@
+﻿@model IEnumerable<ClinicaClient.Models.Recetas>
+@{
+    ViewBag.Title = "Recetas";
+    ViewBag.descripcion = "En este módulo se pueden ver las recetas del paciente seleccionado, con una opción de visualizar el documento";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
+<h3 class="text-center text-uppercase">Recetas</h3>
+<table class="table table-hover table-style text-white text-center" id="dataTable">
+    <thead class=" text-uppercase">
+        <tr>
+            <th class="text-center">
+                Observación
+            </th>
+            <th class="text-center">
+                Fecha de registro
+            </th>
+            <th class="text-center">
+                Abrir
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.observacion
+                </td>
+                <td>
+                    @item.fecha
+                </td>
+                <td>
+                    <a href="~/Recetas/Previsualizar?id=@item.id_receta" target="_blank" class="text-white">
+                        <i class="pe-7s-look"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@Scripts.Render("~/bundles/jquery")
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+<script>
+    $('#dataTable').DataTable({
+        "destroy": false,
+        pageLength: 7,
+        "language": {
+            "url": "https://cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+        },
+        lengthMenu: [[5, 10, 15], [5, 10, 15]]
+    });
+</script>
+
+
