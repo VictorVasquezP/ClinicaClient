@@ -65,7 +65,7 @@ namespace ClinicaClient.Controllers
                 System.Diagnostics.Debug.WriteLine("Error en la peticion");
             }
             
-            if(resultado != null)
+            if(resultado.usuarios != null)
             {
                 resultado.usuarios.password = null;
                 Session["Usuario"] = resultado.usuarios;

@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Citas";
     ViewBag.descripcion = "En este módulo se pueden ver las citas pendientes, las aceptadas y las rechazadas";
     Layout = "~/Views/Shared/_Layout.cshtml";
     List<ClinicaClient.Objects.CitasDoctorObject> listaCitasPendientes = (List<ClinicaClient.Objects.CitasDoctorObject>)TempData["CitasPendiantes"];
@@ -284,7 +284,7 @@
                                     }
                                     else
                                     {
-                                        <option value="@Json.Encode(item)">@item.nombre @item.ape_pat @item.ape_pat</option>
+                                        <option value="@Json.Encode(item)">@item.nombre @item.ape_pat @item.ape_mat</option>
                                     }
 
                                 }
