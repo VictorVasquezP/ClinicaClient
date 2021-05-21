@@ -306,7 +306,7 @@ namespace ClinicaClient.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> DetallesCita(int id_cita, string observacion, string indicaciones, string [] ids_medicamentos, string paciente, string nombreCompleto, float cobro, string correo)
+        public async Task<ActionResult> DetallesCita(int id_cita, string observacion, string indicaciones, string [] ids_medicamentos, float cobro, string correo, HttpPostedFileBase file)
         {
             List<Medicamento> medicamentos = new List<Medicamento>();
             System.Diagnostics.Debug.WriteLine("id_cita: " + id_cita);
@@ -326,7 +326,56 @@ namespace ClinicaClient.Controllers
                     ids = ids + "," + aux.id.ToString();
                 }
             }
-            
+            if (System.IO.File.Exists(Server.MapPath("~/Files/Recetas"+file.FileName)))
+            {
+                System.Diagnostics.Debug.WriteLine("Repetido");
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("No repetido");
+                file.SaveAs(Server.MapPath("~/Files/Recetas/"+ file.FileName));
+                string path = Server.MapPath("~/Files/Recetas/" + file.FileName);
+                Byte[] bytes = System.IO.File.ReadAllBytes(path);
+                string documentoReceta = Convert.ToBase64String(bytes);
+                string documentoTicket = documentoReceta;
+                string ruta = file.FileName;
+
+
+                ResultJson resultado = new ResultJson();
+                var url = "http://proyectoclinica.somee.com/";
+                try
+                {
+                    using (var client = new HttpClient())
+                    {
+                        client.BaseAddress = new Uri(url);
+                        client.DefaultRequestHeaders.Clear();
+                        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                        HttpResponseMessage resp = await client.PostAsJsonAsync("/Citas/DetallesCita", new { id_cita, observacion, indicaciones, ids_medicamentos, ruta, cobro, documentoReceta, documentoTicket });
+                        if (resp.IsSuccessStatusCode)
+                        {
+                            var medResponde = resp.Content.ReadAsStringAsync().Result;
+                            System.Diagnostics.Debug.WriteLine("Registrar receta " + medResponde);
+                            resultado = JsonConvert.DeserializeObject<ResultJson>(medResponde);
+                        }
+                        else
+                        {
+                            System.Diagnostics.Debug.WriteLine("No respuesta");
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    System.Diagnostics.Debug.WriteLine("Error en la peticion");
+                }
+                if (resultado.result)
+                {
+                    SendEmailReceta(correo, path);
+                    return RedirectToAction("Index");
+                }
+
+            }
+            /*
             bool ticketResult = crearTicket(paciente, nombreCompleto, cobro);
             
             bool result = crearReceta(med, observacion, indicaciones, paciente, nombreCompleto);
@@ -378,7 +427,7 @@ namespace ClinicaClient.Controllers
                     SendEmailReceta(correo, path);
                     return RedirectToAction("Index");
                 }
-            }
+            }*/
             
             
             try
