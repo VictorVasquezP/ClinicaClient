@@ -70,13 +70,18 @@ namespace ClinicaClient.Controllers
                 resultado.usuarios.password = null;
                 Session["Usuario"] = resultado.usuarios;
                 Session.Timeout = 30;
-                if (resultado.usuarios.tipo == 0)
+                switch (resultado.usuarios.tipo)
                 {
-                    return RedirectToAction("", "Home");
-                }
-                else
-                {
-                    return RedirectToAction("", "Asistente");
+                    case 0:
+                        return RedirectToAction("", "Home");
+                    case 1:
+                        return RedirectToAction("", "Asistente");
+                    case 2:
+                        return RedirectToAction("", "Admin");
+                    default:
+                        ViewBag.Mensaje = "El Correo y/o contraseña son incorrecta";
+                        ViewBag.usua = usu;
+                        return View();
                 }
             }
             

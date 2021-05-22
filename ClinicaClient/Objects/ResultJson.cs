@@ -31,6 +31,9 @@ namespace ClinicaClient.Objects
         /*RecetasController*/
         public List<Recetas> recetas { get; set; }
         public Recetas receta { get; set; }
+
+        /*UsuariosController*/
+        public List<Usuarios> listaUsuarios { get; set; }
     }
 }
  
