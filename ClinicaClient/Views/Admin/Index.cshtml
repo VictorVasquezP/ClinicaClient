@@ -101,27 +101,27 @@
                     <div class="form-row">
                         <div class="col-md-12 mb-12">
                             <label for="validationCustom01">Nombre</label>
-                            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="nombre" required>
+                            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="nombre" pattern="[A-Z-(ÁÉÍÓÚ)]{1}[A-Za-z(ÁÉÍÓÚáéíóú) ]{3,30}" title="El nombre debe iniciar con mayúsculas y solo deben ser letras" required>
                         </div>
                         <div class="col-md-12 mb-12">
                             <br />
                             <label for="validationCustom01">Apellido paterno</label>
-                            <input type="text" class="form-control" id="ape_pat" name="ape_pat" placeholder="apellido parteno" required>
+                            <input type="text" class="form-control" id="ape_pat" name="ape_pat" placeholder="apellido parteno" pattern="[A-Z-(ÁÉÍÓÚ)]{1}[A-Za-z(ÁÉÍÓÚáéíóú) ]{3,30}" title="El apellido debe iniciar con mayúsculas y solo deben ser letras" required>
                         </div>
                         <div class="col-md-12 mb-12">
                             <br />
                             <label for="validationCustom01">Apellido materno</label>
-                            <input type="text" class="form-control" id="ape_mat" name="ape_mat" placeholder="apellido materno" required>
+                            <input type="text" class="form-control" id="ape_mat" name="ape_mat" placeholder="apellido materno" pattern="[A-Z-(ÁÉÍÓÚ)]{1}[A-Za-z(ÁÉÍÓÚáéíóú) ]{3,30}" title="El apellido debe iniciar con mayúsculas y solo deben ser letras" required>
                         </div>
                         <div class="col-md-12 mb-12">
                             <br />
                             <label for="validationCustom01">Email</label>
-                            <input type="text" class="form-control" id="usuario" name="usuario" placeholder="ejemplo@ejemplo.com" required>
+                            @Html.TextBox("usuario", "", new { @class= "form-control", placeholder = "ejemplo@ejemplo.com", required = "required", pattern = "[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}", title="debe ser un correo válido" })
                         </div>
                         <div class="col-md-12 mb-12">
                             <br />
                             <label for="validationCustom01">Contraseña</label>
-                            <input type="password" class="form-control" id="password" name="password" placeholder="contraseña" required>
+                            <input type="password" class="form-control" id="password" name="password" min="3" max="64" title="Debe tener una longitud de caracteres de min 3 y max 64" placeholder="contraseña" required>
                         </div>
                         <div class="col-md-12 mb-12">
                             <label for="validationCustom01">Usuario</label><br />
@@ -192,27 +192,27 @@
                     <div class="form-row">
                         <div class="col-md-12 mb-12">
                             <label for="validationCustom01">Nombre</label>
-                            <input type="text" class="form-control" id="Enombre" name="nombre" placeholder="nombre" required>
+                            <input type="text" class="form-control" id="Enombre" name="nombre" placeholder="nombre" pattern="[A-Z-(ÁÉÍÓÚ)]{1}[A-Za-z(ÁÉÍÓÚáéíóú) ]{3,30}" title="El nombre debe iniciar con mayúsculas y solo deben ser letras" required>
                         </div>
                         <div class="col-md-12 mb-12">
                             <br />
                             <label for="validationCustom01">Apellido paterno</label>
-                            <input type="text" class="form-control" id="Eape_pat" name="ape_pat" placeholder="apellido parteno" required>
+                            <input type="text" class="form-control" id="Eape_pat" name="ape_pat" placeholder="apellido parteno" pattern="[A-Z-(ÁÉÍÓÚ)]{1}[A-Za-z(ÁÉÍÓÚáéíóú) ]{3,30}" title="El apellido debe iniciar con mayúsculas y solo deben ser letras" required>
                         </div>
                         <div class="col-md-12 mb-12">
                             <br />
                             <label for="validationCustom01">Apellido materno</label>
-                            <input type="text" class="form-control" id="Eape_mat" name="ape_mat" placeholder="apellido materno" required>
+                            <input type="text" class="form-control" id="Eape_mat" name="ape_mat" placeholder="apellido materno" pattern="[A-Z-(ÁÉÍÓÚ)]{1}[A-Za-z(ÁÉÍÓÚáéíóú) ]{3,30}" title="El apellido debe iniciar con mayúsculas y solo deben ser letras" required>
                         </div>
                         <div class="col-md-12 mb-12">
                             <br />
                             <label for="validationCustom01">Email</label>
-                            <input type="text" class="form-control" id="Eusuario" name="usuario" placeholder="ejemplo@ejemplo.com" required>
+                            @Html.TextBox("Eusuario", "", new { @class= "form-control", placeholder = "ejemplo@ejemplo.com", required = "required", pattern = "[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}", title = "debe ser un correo válido" })
                         </div>
                         <div class="col-md-12 mb-12">
                             <br />
                             <label for="validationCustom01">Contraseña</label>
-                            <input type="password" class="form-control" id="password" name="password" placeholder="contraseña" required>
+                            <input type="password" class="form-control" id="Epassword" name="password" min="3" max="64" title="Debe tener una longitud de caracteres de min 3 y max 64" placeholder="contraseña" required>
                         </div>
                         <div class="col-md-12 mb-12">
                             <label for="validationCustom01">Usuario</label><br />

@@ -14,6 +14,8 @@
 <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
 <div class="">
     <h1>@error</h1>
+    <input type="hidden" id="nombreCompleto" value="@nombreCompleto" />
+    <input type="hidden" id="paciente" value="@paciente" />
     <ul class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav">
         <li class="nav-item">
             <a role="tab" class="nav-link active" id="tab-0" data-toggle="tab" href="#tab-content-0">
@@ -68,17 +70,17 @@
                             <div class="form-row">
                                 <div class="col-md-12 mb-12">
                                     <label for="validationCustom01" class="text-black-50">Observaciones</label>
-                                    <textarea class="form-control" id="observacion" name="observacion" placeholder="Obserciones" required></textarea>
+                                    <textarea class="form-control" id="observacion" name="observacion" placeholder="Obserciones" minlength="5" maxlength="150" title="debe ser una descripción de más de 5 caractéres y menos de 150" required></textarea>
                                 </div>
                                 <div class="col-md-12 mb-12">
                                     <br />
                                     <label for="validationCustom01" class="text-black-50">Instrucciones</label>
-                                    <textarea class="form-control" id="indicaciones" name="indicaciones" placeholder="Indicaciones" required></textarea>
+                                    <textarea class="form-control" id="indicaciones" name="indicaciones" placeholder="Indicaciones" minlength="5" maxlength="150" title="debe ser una descripción de más de 5 caractéres y menos de 150" required></textarea>
                                 </div>
                                 <div class="col-md-12 mb-12">
                                     <br />
                                     <label for="validationCustom01" class="text-black-50">Total</label>
-                                    <input type="number" step="any" class="form-control" id="cobro" name="cobro" placeholder="$" required />
+                                    <input type="number" step="any" class="form-control" id="cobro" name="cobro" placeholder="$" min="0" title="No pueden ser número negativos" required />
                                 </div>
                                 <label for="validationCustom01" class="text-black-50">Medicamentos</label>
                                 <div class="col-md-12 mb-12">
@@ -322,10 +324,13 @@
             $('.image-upload-wrap').removeClass('image-dropping');
         });
 
+
         function generarPDF() {
             var observacion = document.getElementById('observacion').value;
             var indicaciones = document.getElementById('indicaciones').value;
             var cobro = "$" + document.getElementById('cobro').value;
+            var paciente = document.getElementById('paciente').value;
+            var nombre = document.getElementById('nombreCompleto').value;
             console.log(observacion.lngth)
             if ((observacion.length > 5) && (indicaciones.length > 5) && (cobro.length > 1)) {
 
@@ -353,7 +358,7 @@
                 doc.setFont('helvetica');
                 doc.setFontType('normal');
                 doc.setFontSize(14);
-                doc.text(76, 65, '@nombreCompleto');
+                doc.text(76, 65, nombre);
 
                 doc.setFont('helvetica');
                 doc.setFontType('bold');
@@ -429,7 +434,7 @@
                 doc.setFontSize(11);
                 doc.text(20, 288, 'Av. Bustamante No. 45  Zimatlán de Álvares  Tel: 654-51-23-01  Cel: 951014596  erisso@gmail.com');
 
-                doc.save('@paciente' + '.pdf');
+                doc.save(paciente + '.pdf');
 
             }
 

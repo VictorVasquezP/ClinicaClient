@@ -274,6 +274,7 @@ namespace ClinicaClient.Controllers
             {
                 System.Diagnostics.Debug.WriteLine("Error en la peticion");
             }
+            System.Diagnostics.Debug.WriteLine("Paciente de detalles cita: " + resultado.citaDetalles.nombre +" " + resultado.citaDetalles.ape_pat +" "+ resultado.citaDetalles.ape_mat);
             Session["citaDetalles"] = resultado.citaDetalles;
             List<Medicamento> medicamentos = new List<Medicamento>();
             try

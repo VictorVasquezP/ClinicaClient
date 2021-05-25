@@ -15,6 +15,7 @@ using Org.BouncyCastle.Ocsp;
 using System.IO;
 using Newtonsoft.Json;
 using ClinicaClient.Objects;
+using System.Web.WebPages;
 
 namespace ClinicaClient.Controllers
 {
@@ -33,9 +34,14 @@ namespace ClinicaClient.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Index(string usu, string pas)
         {
+            if(usu.IsEmpty() && pas.IsEmpty())
+            {
+                ViewBag.Mensaje = "El Correo y/o contraseña son incorrecta";
+                ViewBag.usua = usu;
+                return View();
+            }
             ResultJson resultado = new ResultJson();
             string hashPassword = EncodePassword(pas);
-            
             string usuario = usu;
             string password = hashPassword;
             var url = "http://proyectoclinica.somee.com/";

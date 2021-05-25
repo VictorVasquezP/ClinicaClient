@@ -254,10 +254,7 @@
     <Content Include="Content\css\bootstrap.css.map" />
     <Content Include="Content\css\bootstrap.min.css.map" />
     <Content Include="Files\Recetas\04052021-Victor-Receta.pdf" />
-    <Content Include="Files\Recetas\11052021-Victor-Receta.pdf" />
-    <Content Include="Files\Recetas\Victor_tarea1_u2.pdf" />
     <Content Include="Files\Recibos\11052021-Victor-Recibo.pdf" />
-    <Content Include="Files\Recibos\12052021-VictorManuel-Recibo.pdf" />
     <Content Include="fonts\fa-solid-900.eot" />
     <Content Include="fonts\fa-solid-900.ttf" />
     <Content Include="fonts\fa-solid-900.woff" />
@@ -269,6 +266,7 @@
     <Content Include="fonts\Pe-icon-7-stroke.eot" />
     <Content Include="fonts\Pe-icon-7-stroke.ttf" />
     <Content Include="fonts\Pe-icon-7-stroke.woff" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
